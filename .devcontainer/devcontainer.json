@@ -1,0 +1,41 @@
+{
+	"$schema": "https://json-schema.org/draft-07/schema#",
+	"name": "Ubuntu",
+	"build": {
+		  "dockerfile": "Dockerfile",
+		  "context": ".."
+	  },
+
+	  "customizations": {
+		  "vscode": {
+			  "settings": { },
+			  
+			  "extensions": [
+				  "ms-vscode.hexeditor",
+				  "davidanson.vscode-markdownlint",
+				  "esbenp.prettier-vscode",
+				  "ms-azuretools.vscode-bicep"  
+				  ]
+		  }
+	  },  
+	  "remoteUser": "vscode",
+	  "features": {
+		"git": "latest",
+		"ghcr.io/devcontainers/features/docker-in-docker:1": {
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {
+			"extensions": "connectedk8s,k8s-extension,containerapp",
+			"installBicep": true
+		},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+		"ghcr.io/devcontainers/features/python:1": {}	  
+	  },  
+	  "mounts": [
+		"type=bind,source=${localWorkspaceFolder},target=/workspace",
+		"type=bind,source=${localEnv:HOME}${env:USERPROFILE}/.ssh,target=/home/vscode/.ssh",
+		"type=bind,source=${localEnv:HOME}${env:USERPROFILE}/.kube,target=/home/vscode/.kube",
+		"type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"
+	  ],  
+	"postAttachCommand": "mkdir -p /home/$(id -un)/.ssh && touch /home/$(id -un)/.ssh/config && sudo chown -R vscode:vscode /var/run/docker.sock"
+}
